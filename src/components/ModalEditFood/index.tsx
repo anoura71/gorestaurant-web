@@ -6,6 +6,7 @@ import { Form } from './styles';
 import Modal from '../Modal';
 import Input from '../Input';
 
+
 interface IFoodPlate {
   id: number;
   name: string;
@@ -15,12 +16,14 @@ interface IFoodPlate {
   available: boolean;
 }
 
+
 interface IModalProps {
   isOpen: boolean;
   setIsOpen: () => void;
   handleUpdateFood: (food: Omit<IFoodPlate, 'id' | 'available'>) => void;
   editingFood: IFoodPlate;
 }
+
 
 interface IEditFoodData {
   name: string;
@@ -29,20 +32,28 @@ interface IEditFoodData {
   description: string;
 }
 
+
 const ModalEditFood: React.FC<IModalProps> = ({
   isOpen,
   setIsOpen,
   editingFood,
   handleUpdateFood,
 }) => {
+
+
   const formRef = useRef<FormHandles>(null);
 
+
   const handleSubmit = useCallback(
+
     async (data: IEditFoodData) => {
-      // EDIT A FOOD PLATE AND CLOSE THE MODAL
+      // Editar um prato e fechar o modal
+      handleUpdateFood(data);
+      setIsOpen();
     },
     [handleUpdateFood, setIsOpen],
   );
+
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -64,6 +75,9 @@ const ModalEditFood: React.FC<IModalProps> = ({
       </Form>
     </Modal>
   );
+
+
 };
+
 
 export default ModalEditFood;

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-
 import { FiEdit3, FiTrash } from 'react-icons/fi';
 
+import api from '../../services/api';
+
 import { Container } from './styles';
+
 
 interface IFoodPlate {
   id: number;
@@ -13,26 +15,45 @@ interface IFoodPlate {
   available: boolean;
 }
 
+
 interface IProps {
   food: IFoodPlate;
   handleDelete: (id: number) => {};
   handleEditFood: (food: IFoodPlate) => void;
 }
 
+
 const Food: React.FC<IProps> = ({
   food,
   handleDelete,
   handleEditFood,
 }: IProps) => {
+
+
   const [isAvailable, setIsAvailable] = useState(food.available);
 
+
   async function toggleAvailable(): Promise<void> {
-    // TODO UPDATE STATUS (available)
+
+    try {
+      // Atualiza o prato, trocando a disponibilidade
+      await api.put(`/foods/${food.id}`, {
+        ...food,
+        available: !isAvailable,
+      });
+      setIsAvailable(!isAvailable);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
+
   function setEditingFood(): void {
-    // TODO - SET THE ID OF THE CURRENT ITEM TO THE EDITING FOOD AND OPEN MODAL
+
+    // "Guarda" o prato que está sendo editado
+    handleEditFood(food);
   }
+
 
   return (
     <Container available={isAvailable}>
@@ -85,5 +106,6 @@ const Food: React.FC<IProps> = ({
     </Container>
   );
 };
+
 
 export default Food;

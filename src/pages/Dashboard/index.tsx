@@ -10,6 +10,7 @@ import ModalEditFood from '../../components/ModalEditFood';
 
 import { FoodsContainer } from './styles';
 
+
 interface IFoodPlate {
   id: number;
   name: string;
@@ -19,51 +20,97 @@ interface IFoodPlate {
   available: boolean;
 }
 
+
 const Dashboard: React.FC = () => {
+
+
   const [foods, setFoods] = useState<IFoodPlate[]>([]);
   const [editingFood, setEditingFood] = useState<IFoodPlate>({} as IFoodPlate);
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
 
+
   useEffect(() => {
+
     async function loadFoods(): Promise<void> {
-      // TODO LOAD FOODS
+
+      const response = await api.get('/foods');
+      setFoods(response.data);
     }
 
     loadFoods();
   }, []);
 
+
   async function handleAddFood(
     food: Omit<IFoodPlate, 'id' | 'available'>,
   ): Promise<void> {
+
     try {
-      // TODO ADD A NEW FOOD PLATE TO THE API
+      // Adicionar um novo prato
+      const response = await api.post('/foods', {
+        ...food,
+        available: true,
+      });
+      setFoods([...foods, response.data]);
     } catch (err) {
       console.log(err);
     }
   }
 
+
   async function handleUpdateFood(
     food: Omit<IFoodPlate, 'id' | 'available'>,
   ): Promise<void> {
-    // TODO UPDATE A FOOD PLATE ON THE API
+
+    try {
+      // Atualizar os dados de um prato
+      const response = await api.put(`/foods/${editingFood.id}`, {
+        ...editingFood,
+        ...food,
+      });
+      setFoods(foods.map(mappedFood =>
+        mappedFood.id === editingFood.id ?
+          { ...response.data } :
+          mappedFood
+      ));
+    } catch (err) {
+      console.log(err);
+    }
   }
+
 
   async function handleDeleteFood(id: number): Promise<void> {
-    // TODO DELETE A FOOD PLATE FROM THE API
+
+    try {
+      // Excluir um prato
+      await api.delete(`/foods/${id}`);
+      setFoods(foods.filter(food => food.id !== id));
+    } catch (error) {
+      console.log(error);
+    }
   }
 
+
   function toggleModal(): void {
+
     setModalOpen(!modalOpen);
   }
 
+
   function toggleEditModal(): void {
+
     setEditModalOpen(!editModalOpen);
   }
 
+
   function handleEditFood(food: IFoodPlate): void {
-    // TODO SET THE CURRENT EDITING FOOD ID IN THE STATE
+
+    // Abre o modal de edição do prato com os dados do prato a ser editado
+    setEditingFood(food);
+    toggleEditModal();
   }
+
 
   return (
     <>
@@ -93,6 +140,9 @@ const Dashboard: React.FC = () => {
       </FoodsContainer>
     </>
   );
+
+
 };
+
 
 export default Dashboard;

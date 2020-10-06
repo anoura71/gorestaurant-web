@@ -23,6 +23,22 @@
       "price": "25.90",
       "available": true,
       "image": "https://storage.googleapis.com/golden-wind/bootcamp-gostack/desafio-food/food3.png"
+    },
+    {
+      "image": "https://storage.googleapis.com/golden-wind/bootcamp-gostack/desafio-food/food1.png",
+      "name": "Spaghetti alla puttanesca",
+      "price": "12,99",
+      "description": "Spaghetti com azeitonas, no capricho.",
+      "available": true,
+      "id": 4
+    },
+    {
+      "image": "https://storage.googleapis.com/golden-wind/bootcamp-gostack/desafio-food/food2.png",
+      "name": "Yaki Soba",
+      "price": "17,99",
+      "description": "Todo o sabor do Oriente...",
+      "available": true,
+      "id": 5
     }
   ]
 }
